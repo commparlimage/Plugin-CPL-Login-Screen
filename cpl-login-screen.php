@@ -2,11 +2,11 @@
 /**
  * Plugin Name: Page de connexion CPL
  * Description: Personnalisation de l’écran de connexion WordPress.
- * Version: 1.1.1
+ * Version: 1.0.0
  * Author: CPL
  * Text Domain: cpl-login-screen
  * GitHub Plugin URI: https://github.com/commparlimage/Plugin-CPL-Login-Screen
- * GitHub Branch: main
+ * Primary Branch: main
  */
 
 if ( ! defined( 'ABSPATH' ) ) {
