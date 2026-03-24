@@ -1,0 +1,22 @@
+.cpl-login-option-group {
+	background: #fff;
+	border: 1px solid #d6d6d6;
+	padding: 2rem;
+	margin: 2rem 0;
+	box-sizing: border-box;
+}
+
+.cpl-login-option-inner {
+	display: flex;
+	align-items: flex-end;
+	gap: 2rem;
+}
+
+.cpl-login-option-group > h2 {
+	padding-bottom: 1rem;
+	border-bottom: 1px solid #d6d6d6;
+}
+
+#cpl-login-logo-preview img {
+	background: #f1f1f1;
+}

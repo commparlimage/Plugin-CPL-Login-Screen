@@ -1,0 +1,148 @@
+#login {
+	padding: 2% 0 0;
+}
+
+#login h1.wp-login-logo {
+	display: none;
+}
+
+.cpl-login-inner {
+	max-width: 85%;
+	padding: 1rem 0;
+	margin: auto;
+}
+
+.cpl-login-logo {
+	text-align: center;
+	padding-top: 6rem;
+	margin: auto;
+}
+
+.cpl-login-logo img {
+	max-width: 350px;
+}
+
+/**
+ * Contact style
+ */
+
+.cpl-login-contact {
+	text-align: center;
+	background: #fff;
+	padding: 1rem 0;
+	border-top: 1px solid #d6d6d6;
+	border-bottom: 1px solid #d6d6d6;
+	margin-top: 1rem;
+	margin-bottom: 1rem;
+}
+
+.cpl-login-contact a:hover {
+	color: #333;
+	text-decoration: underline;
+}
+
+.cpl-login-contact .cpl-contact-link-container {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	margin-top: 1rem;
+}
+
+.cpl-login-contact .cpl-contact-link {
+	display: inline-flex;
+	align-content: center;
+	font-size: 1rem;
+	text-decoration: none;
+	margin: 0 1rem;
+}
+
+.cpl-login-contact .cpl-login-phone::before,
+.cpl-login-contact .cpl-login-email::before {
+	content: '';
+	width: 1.5rem;
+	height: 1.5rem;
+	margin-right: .5rem;
+	background: currentColor;
+}
+
+.cpl-login-contact .cpl-login-phone::before {
+	-webkit-mask: url(../images/phone-icon.svg) no-repeat center center/contain;
+	mask: url(../images/phone-icon.svg) no-repeat center center/contain;
+}
+
+.cpl-login-contact .cpl-login-email::before {
+	-webkit-mask: url(../images/email-icon.svg) no-repeat center center/contain;
+	mask: url(../images/email-icon.svg) no-repeat center center/contain;
+}
+
+.cpl-login-contact .cpl-blog-message {
+	margin-top: 2rem;
+}
+
+/**
+ * Footer style
+ */
+
+.cpl-login-footer {
+	text-align: center;
+}
+
+.cpl-login-footer a {
+	display: inline-block;
+}
+
+.cpl-login-footer .cpl-logo {
+	display: inline-block;
+	width: 200px;
+	height: 79px;
+	background: #333;
+	-webkit-mask: var(--cpl-logo) no-repeat center center/contain;
+	mask: var(--cpl-logo) no-repeat center center/contain;
+	margin-bottom: -.78rem;
+	transition: background .2s;
+}
+
+.cpl-login-footer .cpl-logo:hover {
+	background: #2271b1;
+}
+
+/**
+ * Media queries
+ */
+
+@media screen and (max-width: 480px) {
+
+	.cpl-login-inner {
+		max-width: 95%;
+	}
+
+	.cpl-login-contact {
+		margin-top: 1rem;
+	}
+
+	.cpl-login-contact h2 {
+		line-height: 1;
+		margin-bottom: 1rem;
+	}
+
+	.cpl-login-contact .cpl-contact-link-container {
+		flex-wrap: wrap;
+	}
+
+	.cpl-login-contact .cpl-contact-link {
+		font-size: .9rem;
+	}
+
+	.cpl-login-contact .cpl-login-phone::before,
+	.cpl-login-contact .cpl-login-email::before {
+		width: 1.125rem;
+		height: 1.125rem;
+	}
+
+	.cpl-login-footer .cpl-logo {
+		width: 150px;
+		height: 59px;
+	}
+
+}
+
