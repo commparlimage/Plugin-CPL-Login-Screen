@@ -5,7 +5,7 @@
  * Version: 1.1.1
  * Author: CPL
  * Text Domain: cpl-login-screen
- * GitHub Plugin URI: https://github.com/commparlimage/Plugin-CPL-Login-Screen
+ * GitHub Plugin URI: commparlimage/Plugin-CPL-Login-Screen
  * GitHub Branch: main
  */
 
