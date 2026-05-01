@@ -13,6 +13,139 @@ if ( ! defined( 'ABSPATH' ) ) {
     exit;
 }
 
+/* ============================================================================================ */
+/* SÉCURITÉ LOGIN                                                                               */
+/* ============================================================================================ */
+
+/**
+ * Bloque l'accès public aux endpoints REST API des utilisateurs.
+ */
+add_filter('rest_endpoints', function ($endpoints) {
+    if (!is_user_logged_in()) {
+        unset($endpoints['/wp/v2/users']);
+        unset($endpoints['/wp/v2/users/(?P<id>[\d]+)']);
+    }
+    return $endpoints;
+});
+
+/**
+ * Bloque l'exposition des auteurs dans les réponses REST des posts.
+ */
+add_filter('rest_prepare_post', function ($response, $post, $request) {
+    if (!is_user_logged_in()) {
+        $data = $response->get_data();
+        unset($data['author']);
+        if (isset($data['_links']['author'])) {
+            unset($data['_links']['author']);
+        }
+        $response->set_data($data);
+    }
+    return $response;
+}, 10, 3);
+
+/**
+ * Bloque l'énumération publique des auteurs WordPress.
+ */
+add_action('init', function () {
+    if (isset($_GET['author']) && is_numeric($_GET['author'])) {
+        wp_redirect(home_url('/'), 301);
+        exit;
+    }
+});
+
+add_action('template_redirect', function () {
+    if (!is_user_logged_in() && is_author()) {
+        wp_redirect(home_url('/'), 301);
+        exit;
+    }
+}, 1);
+
+/**
+ * Désactive complètement XML-RPC.
+ */
+add_filter('xmlrpc_enabled', '__return_false');
+
+/**
+ * Bloque les requêtes directes vers xmlrpc.php.
+ */
+add_action('init', function () {
+    if (isset($_SERVER['SCRIPT_NAME']) && basename($_SERVER['SCRIPT_NAME']) === 'xmlrpc.php') {
+        status_header(403);
+        exit;
+    }
+});
+
+/**
+ * Remplace les erreurs de connexion par un message générique.
+ */
+add_filter('login_errors', function () {
+    return 'Les informations de connexion sont invalides.';
+});
+
+/* ============================================================================================ */
+/* SÉCURITÉ LOGIN (SUITE)                                                                       */
+/* ============================================================================================ */
+
+/**
+ * Limite les tentatives de connexion échouées par adresse IP.
+ */
+function cpl_get_client_ip() {
+    $ip = $_SERVER['REMOTE_ADDR'] ?? '';
+
+    if (!empty($_SERVER['HTTP_CF_CONNECTING_IP'])) {
+        $ip = $_SERVER['HTTP_CF_CONNECTING_IP'];
+    }
+
+    return sanitize_text_field($ip);
+}
+
+function cpl_login_rate_limit_key() {
+    return 'cpl_login_attempts_' . md5(cpl_get_client_ip());
+}
+
+add_filter('authenticate', function ($user, $username, $password) {
+
+    if (is_wp_error($user)) {
+        return $user;
+    }
+
+    $key = cpl_login_rate_limit_key();
+    $attempts = get_transient($key);
+
+    if ($attempts !== false && (int) $attempts >= 5) {
+        return new WP_Error(
+            'cpl_too_many_login_attempts',
+            'Trop de tentatives de connexion. Veuillez réessayer plus tard.'
+        );
+    }
+
+    return $user;
+
+}, 1, 3);
+
+add_action('wp_login_failed', function ($username) {
+
+    $key = cpl_login_rate_limit_key();
+    $attempts = get_transient($key);
+
+    if ($attempts === false) {
+        $attempts = 0;
+    }
+
+    $attempts++;
+
+    set_transient($key, $attempts, 30 * MINUTE_IN_SECONDS);
+
+});
+
+add_action('wp_login', function ($user_login, $user) {
+    delete_transient(cpl_login_rate_limit_key());
+}, 10, 2);
+
+/* ============================================================================================ */
+/* FIN SÉCURITÉ LOGIN                                                                           */
+/* ============================================================================================ */
+
 if ( is_admin() ) {
     require_once plugin_dir_path( __FILE__ ) . 'admin/cpl-login-screen-admin.php';
 }
